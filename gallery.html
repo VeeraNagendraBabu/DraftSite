@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery — Shiv Puri Tripathi</title>
+
+  <style>
+    :root {
+      --bg: #fffaf2;
+      --card: #ffffff;
+      --line: #e5dcc7;
+      --accent: #b45309;
+      /* warm orange-brown */
+      --text: #2c2c2c;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      margin: 0
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      padding: .9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
+    }
+
+    .topbar h1 {
+      font-size: 1.125rem;
+      margin: 0;
+      font-weight: 700
+    }
+
+    .back {
+      margin-left: auto;
+      text-decoration: none;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    main {
+      padding: 1.5rem 1rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 1.25rem
+    }
+
+    /* Grid like the reference site */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px; /* tighter spacing */
+}
+
+.gallery-grid .grid-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: 250px;      /* fixed uniform height */
+  object-fit: cover;  /* crops to keep proportions */
+  display: block;
+}
+
+
+    /* Card */
+    .g-item {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+      transition: transform .15s ease, box-shadow .15s ease;
+      cursor: pointer;
+    }
+
+    .g-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
+    }
+
+    /* Uniform preview like reference: fix the aspect and crop with object-fit */
+    .g-media {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      /* keeps rows tidy */
+      background: #f6efe2;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Make video previews silent/looping */
+    .g-item video {
+      pointer-events: none
+    }
+
+    /* Mobile: single column */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .g-media {
+        aspect-ratio: auto;
+        height: auto;
+      }
+    }
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      background: rgba(0, 0, 0, .92);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.show {
+      display: flex;
+    }
+
+    .lb-stage {
+      max-width: min(95vw, 1100px);
+      max-height: 90vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-media {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 8px;
+      background: #000;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, .5);
+    }
+
+    .lb-media video {
+      max-height: 80vh;
+    }
+
+    .lb-caption {
+      color: #f6f6f6;
+      text-align: center;
+      margin-top: .75rem;
+      font-size: .95rem;
+      opacity: .95;
+    }
+
+    .lb-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .16);
+      border: 1px solid rgba(255, 255, 255, .35);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .lb-prev {
+      left: -56px;
+    }
+
+    .lb-next {
+      right: -56px;
+    }
+
+    .lb-btn:hover {
+      background: rgba(255, 255, 255, .28);
+    }
+
+    .lb-close {
+      position: absolute;
+      top: -52px;
+      right: -8px;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .35);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .lb-toolbar {
+      position: absolute;
+      bottom: -46px;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #eee;
+      font-size: .9rem;
+    }
+
+    .lb-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      border: 1px solid rgba(255, 255, 255, .35);
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .lb-counter {
+      opacity: .8;
+    }
+
+    /* If viewport is small, keep buttons inside */
+    @media (max-width: 900px) {
+      .lb-prev {
+        left: 10px
+      }
+
+      .lb-next {
+        right: 10px
+      }
+
+      .lb-close {
+        top: 10px;
+        right: 10px
+      }
+
+      .lb-toolbar {
+        bottom: 10px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <h1>Gallery</h1>
+    <a class="back" href="index.html">← Back to Home</a>
+  </header>
+
+  <main>
+    <h2 class="page-title">Gallery</h2>
+
+    <div id="grid" class="gallery-grid" aria-live="polite"></div>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lb-stage">
+      <button class="lb-btn lb-prev" aria-label="Previous">❮</button>
+      <button class="lb-btn lb-next" aria-label="Next">❯</button>
+      <button class="lb-close" aria-label="Close">✕</button>
+
+      <!-- media goes here -->
+      <img id="lbImg" class="lb-media" alt="">
+      <video id="lbVid" class="lb-media" controls playsinline></video>
+
+      <div class="lb-toolbar">
+        <span id="lbPlay" class="lb-pill" aria-live="polite">▶ Play</span>
+        <span id="lbCounter" class="lb-pill lb-counter">1 / 1</span>
+      </div>
+    </div>
+    <div id="lbCap" class="lb-caption"></div>
+  </div>
+
+  <script>
+    // ------- Data source ----------
+    // It will try to read "assets/gallery/manifest.json".
+    // If not found, it falls back to the array below.
+    const FALLBACK = [
+      // IMAGES (add as many as you like)
+      { src: 'assets/gallery/photo-1.jpg', type: 'image', },
+      { src: 'assets/gallery/photo-2.jpg', type: 'image', },
+      { src: 'assets/gallery/photo-3.jpg', type: 'image', },
+      { src: 'assets/gallery/photo-4.jpg', type: 'image', },
+      // VIDEOS (optional)
+      { src: 'assets/gallery/video1.mp4', type: 'video', },
+    ];
+
+    async function loadItems() {
+      try {
+        const r = await fetch('assets/gallery/manifest.json', { cache: 'no-store' });
+        if (r.ok) { const j = await r.json(); if (Array.isArray(j.items)) return j.items; }
+      } catch (e) { /* ignore when local/file protocol */ }
+      return FALLBACK;
+    }
+
+    // ------- Render Grid ----------
+    const grid = document.getElementById('grid');
+    let items = [];
+    let current = 0;
+    let playing = false;
+    let timer = null;
+
+    function renderGrid() {
+      grid.innerHTML = '';
+      items.forEach((it, idx) => {
+        const card = document.createElement('figure');
+        card.className = 'g-item';
+        card.tabIndex = 0;
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', it.caption || 'Open media');
+
+        if (it.type === 'video') {
+          const v = document.createElement('video');
+          v.className = 'g-media';
+          v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+          v.src = it.src;
+          card.appendChild(v);
+        } else {
+          const img = document.createElement('img');
+          img.className = 'g-media';
+          img.src = it.src; img.alt = it.caption || '';
+          card.appendChild(img);
+        }
+
+        card.addEventListener('click', () => openLightbox(idx));
+        card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(idx); } });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // ------- Lightbox ----------
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbVid = document.getElementById('lbVid');
+    const lbCap = document.getElementById('lbCap');
+    const lbPrev = document.querySelector('.lb-prev');
+    const lbNext = document.querySelector('.lb-next');
+    const lbClose = document.querySelector('.lb-close');
+    const lbPlay = document.getElementById('lbPlay');
+    const lbCounter = document.getElementById('lbCounter');
+
+    function showItem(i) {
+      current = (i + items.length) % items.length;
+      const it = items[current];
+
+      // Reset
+      lbImg.style.display = 'none';
+      lbVid.style.display = 'none';
+      lbVid.pause(); lbVid.removeAttribute('src'); lbVid.load();
+
+      if (it.type === 'video') {
+        lbVid.style.display = 'block';
+        lbVid.src = it.src;
+        lbVid.load();
+        lbVid.play().catch(() => { });
+      } else {
+        lbImg.style.display = 'block';
+        lbImg.src = it.src;
+        lbImg.alt = it.caption || '';
+      }
+
+      lbCap.textContent = it.caption || '';
+      lbCounter.textContent = `${current + 1} / ${items.length}`;
+    }
+
+    function openLightbox(i) {
+      showItem(i);
+      lb.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('show');
+      document.body.style.overflow = '';
+      stopSlideshow();
+    }
+
+    function prev() { showItem(current - 1); }
+    function next() { showItem(current + 1); }
+
+    lbPrev.addEventListener('click', prev);
+    lbNext.addEventListener('click', next);
+    lbClose.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+    // Keyboard
+    window.addEventListener('keydown', e => {
+      if (!lb.classList.contains('show')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+      if (e.key.toLowerCase() === 'p') toggleSlideshow();
+    });
+
+    // Touch swipe
+    let sx = null;
+    lb.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      if (sx == null) return;
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) { dx > 0 ? prev() : next(); }
+      sx = null;
+    });
+
+    // Slideshow
+    function toggleSlideshow() {
+      if (playing) { stopSlideshow(); return; }
+      playing = true; lbPlay.textContent = '❚❚ Pause';
+      timer = setInterval(next, 3000);
+    }
+    function stopSlideshow() {
+      playing = false; lbPlay.textContent = '▶ Play';
+      if (timer) clearInterval(timer);
+    }
+    lbPlay.addEventListener('click', toggleSlideshow);
+
+    // Init
+    loadItems().then(list => {
+      // Normalize objects if only strings provided
+      items = list.map(x => (typeof x === 'string') ? { src: x, type: guessType(x) } : x);
+      renderGrid();
+    });
+
+    function guessType(path) {
+      const ext = (path.split('.').pop() || '').toLowerCase();
+      return ['mp4', 'webm', 'ogg'].includes(ext) ? 'video' : 'image';
+    }
+  </script>
+</body>
+
+</html>
