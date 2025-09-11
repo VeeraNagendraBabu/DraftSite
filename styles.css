@@ -33,12 +33,14 @@ body {
   margin-inline: auto
 }
 
+/* Sticky Header */
 .topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 20;
+  width: 100%;
+  z-index: 1000;
   background: #fff;
-  border-bottom: 1px solid #f0e7d8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .bar {
@@ -231,7 +233,6 @@ body {
 }
 
 .svc-head {
-  display: flex;
   justify-content: space-between;
   gap: .5rem;
   align-items: flex-start
@@ -240,6 +241,11 @@ body {
 .svc h3 {
   margin: .1rem 0 .2rem 0;
   font-size: 1.05rem
+}
+
+.text-slate-600 {
+  font-size: small;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .price {
@@ -417,4 +423,75 @@ body {
     transition-duration: .001ms !important;
     scroll-behavior: auto !important
   }
+}
+
+.enhanced-donation-card {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.enhanced-donation-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.enhanced-donation-card p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.paypal-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.paypal-button img {
+  height: 50px;
+}
+
+.secure-note {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 1rem;
+}
+
+/* Section Divider */
+/* Section Divider with Centered Diya */
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  border-top: 2px solid #e2b354;
+  /* warm golden line */
+  margin: 0 1rem;
+}
+
+.section-divider img {
+  width: 60px;
+  /* adjust diya size */
+  height: auto;
+  display: block;
+}
+
+#about,
+#services,
+#gallery,
+#contact,
+#donation {
+  scroll-margin-top: 100px;
 }
