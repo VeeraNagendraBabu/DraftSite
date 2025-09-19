@@ -1,3 +1,30 @@
+//Script to hightlight the menu item.
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav a");
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href").substring(1) === entry.target.id) {
+              link.classList.add("active");
+            }
+          });
+        }
+      });
+    },
+    { rootMargin: "-100px 0px -60% 0px", threshold: [0.1, 0.3, 0.6] }
+  );
+
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+});
+
+
 // Scroll-to
 document.querySelectorAll('.scroll-to').forEach(btn => {
   btn.addEventListener('click', () => {

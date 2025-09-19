@@ -50,9 +50,35 @@ body {
   padding: .6rem 0
 }
 
+.logo-img {
+  height: 50px;
+  /* adjust size */
+  width: auto;
+}
+
 .brand {
   display: flex;
-  flex-direction: column
+  align-items: center;
+  /* vertically center */
+  gap: 10px;
+  /* space between logo and text */
+}
+
+.logo-img {
+  height: 50px;
+  /* adjust size as needed */
+  width: auto;
+}
+
+.left-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.right-logo {
+  margin-left: auto;
+  /* push to right */
 }
 
 .brand .name {
@@ -114,7 +140,8 @@ body {
 .hero {
   padding: 1.6rem 0;
   border-bottom: 1px solid #f0e7d8;
-  background: linear-gradient(180deg, #fff, #fff9ef)
+  background: linear-gradient(180deg, #fff, #fff9ef);
+  margin-top: 20px;
 }
 
 .hero-grid {
@@ -199,7 +226,9 @@ body {
 
 .h2 {
   margin: .2rem 0 1rem 0;
-  font-size: clamp(1.3rem, 2.2vw, 1.8rem)
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  color: rgb(146 64 14 / var(--tw-text-opacity, 1));
+
 }
 
 .dv {
@@ -469,7 +498,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2rem 0;
+  /* margin: 2rem 0; */
 }
 
 .section-divider::before,
@@ -494,4 +523,44 @@ body {
 #contact,
 #donation {
   scroll-margin-top: 100px;
+}
+
+.samskara-title {
+  color: rgb(146 64 14 / 1);
+  /* your requested brownish-orange */
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.samskara-subheading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #92400e;
+  /* deep orange-brown */
+  margin: 2rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-left: 5px solid #f97316;
+  /* orange accent */
+  padding-left: 10px;
+}
+
+.svc h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.nav a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav a.active {
+  color: #f97316; /* orange highlight */
+  border-bottom: 2px solid #f97316;
+  font-weight: bold;
 }
