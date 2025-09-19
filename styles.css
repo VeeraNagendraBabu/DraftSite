@@ -228,7 +228,7 @@ body {
   margin: .2rem 0 1rem 0;
   font-size: clamp(1.3rem, 2.2vw, 1.8rem);
   color: rgb(146 64 14 / var(--tw-text-opacity, 1));
-
+  margin-top: 40px;
 }
 
 .dv {
@@ -517,13 +517,13 @@ body {
   display: block;
 }
 
-#about,
+/* #about,
 #services,
 #gallery,
 #contact,
 #donation {
   scroll-margin-top: 100px;
-}
+} */
 
 .samskara-title {
   color: rgb(146 64 14 / 1);
@@ -560,7 +560,8 @@ body {
 }
 
 .nav a.active {
-  color: #f97316; /* orange highlight */
+  color: #f97316;
+  /* orange highlight */
   border-bottom: 2px solid #f97316;
   font-weight: bold;
 }
