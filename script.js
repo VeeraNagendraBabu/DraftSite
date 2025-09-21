@@ -24,6 +24,42 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Mobile menu toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const nav      = document.querySelector(".topbar .nav");
+  const toggle   = document.querySelector(".menu-toggle");
+  const links    = nav.querySelectorAll("a");
+
+  const closeMenu = () => {
+    nav.classList.remove("nav--open");
+    toggle?.setAttribute("aria-expanded", "false");
+  };
+
+  // Toggle on hamburger click
+  toggle?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    nav.classList.toggle("nav--open");
+    toggle.setAttribute("aria-expanded", nav.classList.contains("nav--open") ? "true" : "false");
+  });
+
+  // Close on link click
+  links.forEach(a => a.addEventListener("click", closeMenu));
+
+  // Close when clicking outside
+  document.addEventListener("click", (e) => {
+    if (nav.classList.contains("nav--open") &&
+        !nav.contains(e.target) &&
+        !toggle.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  // Close on resize to desktop
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) closeMenu();
+  });
+});
+
 
 // Scroll-to
 document.querySelectorAll('.scroll-to').forEach(btn => {

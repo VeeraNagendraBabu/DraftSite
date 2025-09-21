@@ -32,6 +32,84 @@ body {
   width: min(var(--max), 96vw);
   margin-inline: auto
 }
+/* Default nav for desktop */
+.nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Hamburger hidden by default */
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* desktop stays as-is */
+.nav { display: flex; gap: 1.5rem; }
+
+/* hamburger hidden on desktop */
+.menu-toggle { display: none; }
+
+/* MOBILE FIRST — hidden by default */
+.topbar .nav {
+  display: none;                 /* hidden on small screens */
+  position: absolute;
+  top: 64px;                     /* header height */
+  right: 10px;
+  width: 220px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.12);
+  flex-direction: column;
+  gap: .25rem;
+  z-index: 1000;
+}
+
+/* visible when opened */
+.topbar .nav.nav--open {         /* <-- use nav--open, not .active */
+  display: flex;
+}
+
+/* hamburger button */
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* scroll-spy highlight (kept separate) */
+.topbar .nav a.active {
+  color: #f97316;
+  border-bottom: 2px solid #f97316;
+  font-weight: 700;
+}
+
+/* DESKTOP — make nav a row and reset positioning */
+@media (min-width: 768px) {
+  .topbar .nav {
+    display: flex !important;    /* always visible on desktop */
+    position: static;
+    width: auto;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+  .menu-toggle { display: none; }
+}
+
 
 /* Sticky Header */
 .topbar {
@@ -59,9 +137,25 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  /* vertically center */
   gap: 10px;
-  /* space between logo and text */
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;   /* forces stacking vertically */
+  line-height: 1.3;
+}
+
+.brand-text .name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.brand-text .charity {
+  font-size: 0.9rem;
+  color: #f97316;   /* orange */
+  font-weight: 500;
 }
 
 .logo-img {
